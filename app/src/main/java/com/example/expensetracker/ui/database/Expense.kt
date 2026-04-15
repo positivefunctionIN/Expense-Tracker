@@ -1,6 +1,5 @@
 package com.example.expensetracker.ui.database
 
-import android.provider.ContactsContract
 
 data class Expense (
     val id: String,
@@ -10,3 +9,5 @@ data class Expense (
     val date: Long,
     val note: String = ""
 )
+
+enum class Category { FOOD, TRANSPORT, HEALTH, OTHER }
