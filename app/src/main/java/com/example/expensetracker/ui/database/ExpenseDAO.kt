@@ -26,7 +26,8 @@ interface ExpenseDAO {
     @Update
     suspend fun updateExpense(expense: Expense)
 
-
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertAll(expenses: List<Expense>)
 
 
 }
