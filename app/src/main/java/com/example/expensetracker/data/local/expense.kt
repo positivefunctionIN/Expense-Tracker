@@ -13,3 +13,27 @@ data class ExpenseEntity(
     val date: String
 )
 
+// Domain model
+data class Expense(
+    val id: Long,
+    val amount: Double,
+    val category: String,
+    val description: String,
+    val date: String
+)
+
+fun ExpenseEntity.toDomain() = Expense(
+    id = id,
+    amount = amount,
+    category = category,
+    description = description,
+    date = date
+)
+
+fun Expense.toEntity() = ExpenseEntity(
+    id = id,
+    amount = amount,
+    category = category,
+    description = description,
+    date = date
+)
