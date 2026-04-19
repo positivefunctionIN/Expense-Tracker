@@ -17,6 +17,4 @@ interface ExpenseDao {
 
     @Delete
     suspend fun deleteExpense(expense: ExpenseEntity)
-
-
 }
