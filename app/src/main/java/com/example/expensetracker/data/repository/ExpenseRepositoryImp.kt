@@ -1,22 +1,24 @@
 package com.example.expensetracker.data.repository
 
 import com.example.expensetracker.data.local.ExpenseDao
-import com.example.expensetracker.data.local.ExpenseEntity
+import com.example.expensetracker.data.local.Expense
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 
-class ExpenseRepositoryImp(
-    private val expenseDao: ExpenseDao
+class ExpenseRepositoryImpl(
+    private val dao: ExpenseDao
 ) : ExpenseRepository {
-    
-    override fun getAllExpenses(): Flow<List<ExpenseEntity>> {
-        return expenseDao.getAllExpenses()
+
+    override fun getAllExpenses(): Flow<List<Expense>> =
+        dao.getAllExpenses().map { entities ->
+            entities.map { it.toDomain() }
+        }
+
+    override suspend fun insertExpense(expense: Expense) {
+        dao.insertExpense(expense.toEntity())
     }
 
-    override suspend fun insertExpense(expense: ExpenseEntity) {
-        expenseDao.insertExpense(expense)
-    }
-
-    override suspend fun deleteExpense(expense: ExpenseEntity) {
-        expenseDao.deleteExpense(expense)
+    override suspend fun deleteExpense(expense: Expense) {
+        dao.deleteExpense(expense.toEntity())
     }
 }

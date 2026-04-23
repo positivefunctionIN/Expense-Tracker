@@ -12,4 +12,11 @@ fun ExpenseEntity.toDomain(): Expense = Expense(
     date = date
 )
 
-
+// Domain → Entity (app layer → DB layer)
+fun Expense.toEntity(): ExpenseEntity = ExpenseEntity(
+    id = id,
+    amount = amount,
+    category = category,
+    description = description,
+    date = date
+)

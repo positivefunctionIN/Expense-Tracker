@@ -1,10 +1,10 @@
 package com.example.expensetracker.data.repository
 
-import com.example.expensetracker.data.local.ExpenseEntity
+import com.example.expensetracker.data.local.Expense
 import kotlinx.coroutines.flow.Flow
 
 interface ExpenseRepository {
-    fun getAllExpenses(): Flow<List<ExpenseEntity>>
-    suspend fun insertExpense(expense: ExpenseEntity)
-    suspend fun deleteExpense(expense: ExpenseEntity)
+    fun getAllExpenses(): Flow<List<Expense>>
+    suspend fun insertExpense(expense: Expense)
+    suspend fun deleteExpense(expense: Expense)
 }
