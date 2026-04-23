@@ -21,22 +21,3 @@ data class Expense(
     val description: String,
     val date: String
 )
-
-//Wrapper functions to convert between the two
-
-//From Database to App logic:
-fun ExpenseEntity.toDomain() = Expense(
-    id = id,
-    amount = amount,
-    category = category,
-    description = description,
-    date = date
-)
-//From App logic to Database:
-fun Expense.toEntity() = ExpenseEntity(
-    id = id,
-    amount = amount,
-    category = category,
-    description = description,
-    date = date
-)
