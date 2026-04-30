@@ -2,8 +2,8 @@ package com.example.expensetracker.data.DI
 
 import android.content.Context
 import androidx.room.Room
-import com.yourapp.data.local.AppDatabase
-import com.yourapp.data.local.ExpenseDao
+import com.example.expensetracker.data.local.ExpenseDatabase
+import com.example.expensetracker.data.local.ExpenseDao
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -16,21 +16,16 @@ import javax.inject.Singleton
 object DatabaseModule {
 
     @Provides
-    @Singleton  // one database instance for the entire app lifetime
+    @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context
-    ): AppDatabase = Room.databaseBuilder(
+    ): ExpenseDatabase = Room.databaseBuilder(
         context,
-        AppDatabase::class.java,
-        "expense_tracker.db"  // SQLite filename on disk
-    )
-        // .fallbackToDestructiveMigration()  ← add during dev only, REMOVE before release
-        // Without it, changing schema without a Migration crashes on upgrade.
-        // With it, the database is wiped on schema change — fine for dev, never for prod.
-        .build()
+        ExpenseDatabase::class.java,
+        "expense_tracker.db"
+    ).build()
 
     @Provides
-    // No @Singleton here — DAO is lightweight, AppDatabase already is singleton
-    fun provideExpenseDao(database: AppDatabase): ExpenseDao =
+    fun provideExpenseDao(database: ExpenseDatabase): ExpenseDao =
         database.expenseDao()
 }
