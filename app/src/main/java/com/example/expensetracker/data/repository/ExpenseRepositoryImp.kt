@@ -4,8 +4,9 @@ import com.example.expensetracker.data.local.ExpenseDao
 import com.example.expensetracker.data.local.Expense
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class ExpenseRepositoryImpl(
+class ExpenseRepositoryImpl @Inject constructor(
     private val dao: ExpenseDao
 ) : ExpenseRepository {
 
