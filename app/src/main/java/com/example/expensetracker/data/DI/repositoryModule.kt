@@ -1,6 +1,5 @@
 package com.example.expensetracker.data.DI
 
-import com.example.expensetracker.data.repository.ExpenseRepository
 import com.example.expensetracker.data.repository.ExpenseRepositoryImpl
 import dagger.Binds
 import dagger.Module
