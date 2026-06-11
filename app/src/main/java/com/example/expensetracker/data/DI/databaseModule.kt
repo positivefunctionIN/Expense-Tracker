@@ -14,8 +14,6 @@ val databaseModule = module {
     single { get<ExpenseTrackerDatabase>().expenseDAO() }
 }
 
-// data/di/repositoryModule.kt
-
 
 // domain/di/useCaseModule.kt (NEW)
 package com.example.expensetracker.domain.di
