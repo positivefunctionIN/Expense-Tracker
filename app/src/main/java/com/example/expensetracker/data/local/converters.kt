@@ -5,11 +5,6 @@ import androidx.room.TypeConverter
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-/**
- * Room TypeConverters
- * Tells Room how to convert complex types (LocalDateTime)
- * to/from SQLite compatible types (String/Long)
- */
 class Converters {
 
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
