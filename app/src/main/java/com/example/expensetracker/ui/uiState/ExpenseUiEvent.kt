@@ -1,13 +1,11 @@
-// ui/uistate/ExpenseUiState.kt
 package com.example.expensetracker.ui.uistate
 
 import com.example.expensetracker.domain.model.Expense
 import com.example.expensetracker.domain.model.ExpenseCategory
+import java.time.LocalDateTime
 
 /**
  * UI State for expense screen
- * Represents all possible states of the expense list screen
- * Single source of truth for UI
  */
 data class ExpenseUiState(
     val expenses: List<Expense> = emptyList(),
@@ -32,16 +30,8 @@ data class AddEditExpenseUiState(
     val editingExpenseId: Int? = null
 )
 
-// ui/uistate/ExpenseUiEvent.kt
-package com.example.expensetracker.ui.uistate
-
-import com.example.expensetracker.domain.model.Expense
-import com.example.expensetracker.domain.model.ExpenseCategory
-import java.time.LocalDateTime
-
 /**
  * UI Events - user actions triggered from UI
- * Sent from Composables to ViewModel
  */
 sealed class ExpenseUiEvent {
     data class LoadExpenses(val category: ExpenseCategory? = null) : ExpenseUiEvent()
