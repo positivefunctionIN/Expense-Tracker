@@ -1,26 +1,26 @@
+// data/local/converters.kt
 package com.example.expensetracker.data.local
 
 import androidx.room.TypeConverter
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
-// Currently empty of real converters because our schema uses only:
-// Long, Double, String — all natively supported by Room.
-//
-// We store Category as String (categoryName) in the entity,
-// so no converter needed for that either.
-//
-// WHEN YOU WILL NEED THIS:
-// If you add a List<String> field (like receipt photo paths), add:
-
+/**
+ * Room TypeConverters
+ * Tells Room how to convert complex types (LocalDateTime)
+ * to/from SQLite compatible types (String/Long)
+ */
 class Converters {
 
-// Example — storing a list of tags as comma-separated String:
-//
-// @TypeConverter
-// fun fromTagList(tags: List<String>): String = tags.joinToString(",")
-// @TypeConverter
-//    // fun toTagList(raw: String): List<String> =
-//    //     if (raw.isBlank()) emptyList() else raw.split(",")
-//    //
-//    // Keep converters dead simple. No business logic here.
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
+    @TypeConverter
+    fun fromLocalDateTime(dateTime: LocalDateTime?): String? {
+        return dateTime?.format(formatter)
+    }
+
+    @TypeConverter
+    fun toLocalDateTime(dateTimeString: String?): LocalDateTime? {
+        return dateTimeString?.let { LocalDateTime.parse(it, formatter) }
+    }
 }
