@@ -13,14 +13,12 @@ import java.time.LocalDateTime
 @Dao
 interface ExpenseDAO {
 
-    // CREATE
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExpense(expense: ExpenseEntity): Long
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertExpenses(expenses: List<ExpenseEntity>)
 
-    // READ
     @Query("SELECT * FROM expenses ORDER BY date DESC")
     fun getAllExpenses(): Flow<List<ExpenseEntity>>
 
@@ -46,11 +44,9 @@ interface ExpenseDAO {
     @Query("SELECT COUNT(*) FROM expenses")
     fun getExpenseCount(): Flow<Int>
 
-    // UPDATE
     @Update
     suspend fun updateExpense(expense: ExpenseEntity)
 
-    // DELETE
     @Delete
     suspend fun deleteExpense(expense: ExpenseEntity)
 
