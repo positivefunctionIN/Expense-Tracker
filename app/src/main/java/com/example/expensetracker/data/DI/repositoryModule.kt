@@ -1,19 +1,19 @@
-package com.example.expensetracker.data.DI
+package com.example.expensetracker.data.di
 
+import com.example.expensetracker.data.repository.ExpenseMapper
 import com.example.expensetracker.data.repository.ExpenseRepositoryImpl
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import javax.inject.Singleton
+import com.example.expensetracker.domain.repository.ExpenseRepository
+import org.koin.dsl.module
 
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule {
-
-    @Binds
-    @Singleton
-    abstract fun bindExpenseRepository(
-        impl: ExpenseRepositoryImpl
-    ): ExpenseRepository
+/**
+ * Koin module for repository and mapper dependencies
+ */
+val repositoryModule = module {
+    single { ExpenseMapper() }
+    single<ExpenseRepository> {
+        ExpenseRepositoryImpl(
+            expenseDAO = get(),
+            mapper = get()
+        )
+    }
 }
