@@ -1,7 +1,5 @@
+package com.example.expensetracker.data.DI
 
-package com.example.expensetracker.data.di
-
-import android.content.Context
 import com.example.expensetracker.data.local.ExpenseTrackerDatabase
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
@@ -12,6 +10,4 @@ import org.koin.dsl.module
 val databaseModule = module {
     single { ExpenseTrackerDatabase.getInstance(androidContext()) }
     single { get<ExpenseTrackerDatabase>().expenseDAO() }
-}
-
 }

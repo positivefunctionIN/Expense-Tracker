@@ -1,4 +1,3 @@
-// ui/viewmodel/ExpenseViewModel.kt
 package com.example.expensetracker.ui.viewmodel
 
 import androidx.lifecycle.ViewModel
@@ -8,16 +7,17 @@ import com.example.expensetracker.domain.model.ExpenseCategory
 import com.example.expensetracker.domain.model.PaymentMethod
 import com.example.expensetracker.domain.usecase.*
 import com.example.expensetracker.ui.uistate.*
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import java.time.LocalDateTime
+import javax.inject.Inject
 
 /**
  * ViewModel for Expense screen
- * Manages state and handles user events
- * Survives configuration changes (screen rotation, etc)
  */
-class ExpenseViewModel(
+@HiltViewModel
+class ExpenseViewModel @Inject constructor(
     private val getAllExpensesUseCase: GetAllExpensesUseCase,
     private val addExpenseUseCase: AddExpenseUseCase,
     private val updateExpenseUseCase: UpdateExpenseUseCase,
@@ -26,16 +26,13 @@ class ExpenseViewModel(
     private val getTotalExpensesByCategoryUseCase: GetTotalExpensesByCategoryUseCase
 ) : ViewModel() {
 
-    // Private mutable state
     private val _uiState = MutableStateFlow(ExpenseUiState())
     val uiState: StateFlow<ExpenseUiState> = _uiState.asStateFlow()
 
-    // Init block - load expenses when ViewModel is created
     init {
         loadExpenses()
     }
 
-    // Handle UI events
     fun onEvent(event: ExpenseUiEvent) {
         when (event) {
             is ExpenseUiEvent.LoadExpenses -> loadExpenses()
@@ -122,7 +119,8 @@ class ExpenseViewModel(
 /**
  * ViewModel for Add/Edit Expense screen
  */
-class AddEditExpenseViewModel(
+@HiltViewModel
+class AddEditExpenseViewModel @Inject constructor(
     private val addExpenseUseCase: AddExpenseUseCase,
     private val updateExpenseUseCase: UpdateExpenseUseCase
 ) : ViewModel() {
@@ -170,13 +168,13 @@ class AddEditExpenseViewModel(
                     paymentMethod = PaymentMethod.valueOf(_uiState.value.paymentMethod)
                 )
 
-                val useCase = if (expense.id > 0) {
+                val result = if (expense.id > 0) {
                     updateExpenseUseCase(expense)
                 } else {
                     addExpenseUseCase(expense).mapCatching { Unit }
                 }
 
-                useCase.onSuccess {
+                result.onSuccess {
                     _uiState.update {
                         it.copy(isLoading = false, isSuccess = true, error = null)
                     }
