@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.expensetracker.domain.model.ExpenseCategory
@@ -17,13 +18,14 @@ import com.example.expensetracker.ui.components.*
 import com.example.expensetracker.ui.uistate.ExpenseUiEvent
 import com.example.expensetracker.ui.viewmodel.ExpenseViewModel
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(
     viewModel: ExpenseViewModel,
     onAddExpenseClick: () -> Unit,
     onExpenseClick: (Int) -> Unit
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
 
     Scaffold(
         floatingActionButton = {
@@ -37,7 +39,11 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Expense Tracker") },
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier.fillMaxWidth(),
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                )
             )
         }
     ) { paddingValues ->
@@ -47,10 +53,10 @@ fun HomeScreen(
                 .padding(paddingValues)
         ) {
             when {
-                uiState.value.isLoading -> {
+                uiState.isLoading -> {
                     LoadingIndicator()
                 }
-                uiState.value.error != null -> {
+                uiState.error != null -> {
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
@@ -59,7 +65,7 @@ fun HomeScreen(
                         horizontalAlignment = androidx.compose.ui.Alignment.CenterHorizontally
                     ) {
                         Text(
-                            text = "Error: ${uiState.value.error}",
+                            text = "Error: ${uiState.error}",
                             color = MaterialTheme.colorScheme.error
                         )
                         Button(
@@ -76,7 +82,7 @@ fun HomeScreen(
                     ) {
                         // Summary card
                         item {
-                            SummaryCard(total = uiState.value.totalExpense)
+                            SummaryCard(total = uiState.totalExpense)
                         }
 
                         // Category filters
@@ -90,7 +96,7 @@ fun HomeScreen(
                                 // "All" option
                                 item {
                                     FilterChip(
-                                        selected = uiState.value.selectedCategory == null,
+                                        selected = uiState.selectedCategory == null,
                                         onClick = {
                                             viewModel.onEvent(
                                                 ExpenseUiEvent.FilterByCategory(null)
@@ -101,10 +107,10 @@ fun HomeScreen(
                                 }
 
                                 // Category filters
-                                items(ExpenseCategory.values()) { category ->
+                                items(ExpenseCategory.entries) { category ->
                                     CategoryFilterChip(
                                         category = category,
-                                        isSelected = uiState.value.selectedCategory == category,
+                                        isSelected = uiState.selectedCategory == category,
                                         onClick = {
                                             viewModel.onEvent(
                                                 ExpenseUiEvent.FilterByCategory(category)
@@ -116,13 +122,13 @@ fun HomeScreen(
                         }
 
                         // Expenses list
-                        if (uiState.value.expenses.isEmpty()) {
+                        if (uiState.expenses.isEmpty()) {
                             item {
                                 EmptyState()
                             }
                         } else {
                             items(
-                                items = uiState.value.expenses,
+                                items = uiState.expenses,
                                 key = { it.id }
                             ) { expense ->
                                 ExpenseItem(
