@@ -17,7 +17,6 @@ import com.example.expensetracker.ui.components.*
 import com.example.expensetracker.ui.uistate.ExpenseUiEvent
 import com.example.expensetracker.ui.viewmodel.ExpenseViewModel
 
-
 @Composable
 fun HomeScreen(
     viewModel: ExpenseViewModel,
@@ -38,10 +37,7 @@ fun HomeScreen(
         topBar = {
             TopAppBar(
                 title = { Text("Expense Tracker") },
-                colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary
-                )
+                modifier = Modifier.fillMaxWidth()
             )
         }
     ) { paddingValues ->
