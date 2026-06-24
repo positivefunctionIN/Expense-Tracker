@@ -17,14 +17,7 @@ import com.example.expensetracker.ui.components.*
 import com.example.expensetracker.ui.uistate.ExpenseUiEvent
 import com.example.expensetracker.ui.viewmodel.ExpenseViewModel
 
-/**
- * Home Screen - Main expense list screen
- * Shows:
- * - Total spending
- * - Category filters
- * - List of expenses
- * - Add expense FAB
- */
+
 @Composable
 fun HomeScreen(
     viewModel: ExpenseViewModel,

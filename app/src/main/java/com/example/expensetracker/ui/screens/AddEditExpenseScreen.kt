@@ -1,11 +1,10 @@
-// ui/screens/AddEditExpenseScreen.kt
 package com.example.expensetracker.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
@@ -16,26 +15,48 @@ import com.example.expensetracker.ui.components.ErrorMessage
 import com.example.expensetracker.ui.uistate.AddEditExpenseUiEvent
 import com.example.expensetracker.ui.viewmodel.AddEditExpenseViewModel
 import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 
 /**
  * Add/Edit Expense Screen
  * Form for creating or editing expenses
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditExpenseScreen(
     viewModel: AddEditExpenseViewModel,
     onNavigateBack: () -> Unit,
     onSaveSuccess: () -> Unit
 ) {
-    val uiState = viewModel.uiState.collectAsState()
+    val uiState by viewModel.uiState.collectAsState()
     var selectedDate by remember { mutableStateOf(LocalDateTime.now()) }
     var showDatePicker by remember { mutableStateOf(false) }
     var showCategoryDropdown by remember { mutableStateOf(false) }
     var showPaymentMethodDropdown by remember { mutableStateOf(false) }
 
-    LaunchedEffect(uiState.value.isSuccess) {
-        if (uiState.value.isSuccess) {
+    LaunchedEffect(uiState.isSuccess) {
+        if (uiState.isSuccess) {
             onSaveSuccess()
+        }
+    }
+
+    if (showDatePicker) {
+        val datePickerState = rememberDatePickerState()
+        DatePickerDialog(
+            onDismissRequest = { showDatePicker = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    datePickerState.selectedDateMillis?.let {
+                        // Minimal conversion for example
+                        // selectedDate = ... 
+                    }
+                    showDatePicker = false
+                }) {
+                    Text("OK")
+                }
+            }
+        ) {
+            DatePicker(state = datePickerState)
         }
     }
 
@@ -44,21 +65,18 @@ fun AddEditExpenseScreen(
             TopAppBar(
                 title = {
                     Text(
-                        if (uiState.value.editingExpenseId != null)
-                            "Edit Expense"
-                        else
-                            "Add Expense"
+                        if (uiState.editingExpenseId != null) "Edit Expense" else "Add Expense"
                     )
                 },
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Back")
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = MaterialTheme.colorScheme.onPrimary,
-                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimary
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    titleContentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+                    navigationIconContentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
         }
@@ -74,7 +92,7 @@ fun AddEditExpenseScreen(
 
             // Title field
             TextField(
-                value = uiState.value.title,
+                value = uiState.title,
                 onValueChange = { newValue ->
                     viewModel.onEvent(AddEditExpenseUiEvent.TitleChanged(newValue))
                 },
@@ -86,7 +104,7 @@ fun AddEditExpenseScreen(
 
             // Amount field
             TextField(
-                value = uiState.value.amount,
+                value = uiState.amount,
                 onValueChange = { newValue ->
                     viewModel.onEvent(AddEditExpenseUiEvent.AmountChanged(newValue))
                 },
@@ -99,16 +117,16 @@ fun AddEditExpenseScreen(
             // Category dropdown
             ExposedDropdownMenuBox(
                 expanded = showCategoryDropdown,
-                onExpandedChange = { showCategoryDropdown = !showCategoryDropdown }
+                onExpandedChange = { showCategoryDropdown = it }
             ) {
                 TextField(
-                    value = uiState.value.category.displayName,
+                    value = uiState.category.displayName,
                     onValueChange = {},
                     readOnly = true,
                     label = { Text("Category") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showCategoryDropdown) },
                     modifier = Modifier
-                        .menuAnchor()
+                        .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                         .fillMaxWidth()
                 )
 
@@ -116,7 +134,7 @@ fun AddEditExpenseScreen(
                     expanded = showCategoryDropdown,
                     onDismissRequest = { showCategoryDropdown = false }
                 ) {
-                    ExpenseCategory.values().forEach { category ->
+                    ExpenseCategory.entries.forEach { category ->
                         DropdownMenuItem(
                             text = { Text(category.displayName) },
                             onClick = {
@@ -131,16 +149,16 @@ fun AddEditExpenseScreen(
             // Payment method dropdown
             ExposedDropdownMenuBox(
                 expanded = showPaymentMethodDropdown,
-                onExpandedChange = { showPaymentMethodDropdown = !showPaymentMethodDropdown }
+                onExpandedChange = { showPaymentMethodDropdown = it }
             ) {
                 TextField(
-                    value = uiState.value.paymentMethod,
+                    value = uiState.paymentMethod,
                     onValueChange = {},
                     readOnly = true,
                     label = { Text("Payment Method") },
                     trailingIcon = { ExposedDropdownMenuDefaults.TrailingIcon(expanded = showPaymentMethodDropdown) },
                     modifier = Modifier
-                        .menuAnchor()
+                        .menuAnchor(MenuAnchorType.PrimaryNotEditable)
                         .fillMaxWidth()
                 )
 
@@ -148,7 +166,7 @@ fun AddEditExpenseScreen(
                     expanded = showPaymentMethodDropdown,
                     onDismissRequest = { showPaymentMethodDropdown = false }
                 ) {
-                    PaymentMethod.values().forEach { method ->
+                    PaymentMethod.entries.forEach { method ->
                         DropdownMenuItem(
                             text = { Text(method.displayName) },
                             onClick = {
@@ -162,7 +180,7 @@ fun AddEditExpenseScreen(
 
             // Description field
             TextField(
-                value = uiState.value.description,
+                value = uiState.description,
                 onValueChange = { newValue ->
                     viewModel.onEvent(AddEditExpenseUiEvent.DescriptionChanged(newValue))
                 },
@@ -181,13 +199,13 @@ fun AddEditExpenseScreen(
                     .fillMaxWidth()
                     .height(50.dp)
             ) {
-                Text("Select Date: ${selectedDate.toLocalDate()}")
+                Text("Date: ${selectedDate.format(DateTimeFormatter.ISO_LOCAL_DATE)}")
             }
 
             // Error message
-            if (uiState.value.error != null) {
+            if (uiState.error != null) {
                 ErrorMessage(
-                    message = uiState.value.error!!,
+                    message = uiState.error!!,
                     onDismiss = {
                         viewModel.onEvent(AddEditExpenseUiEvent.ClearError)
                     }
@@ -202,12 +220,13 @@ fun AddEditExpenseScreen(
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(50.dp),
-                enabled = !uiState.value.isLoading
+                enabled = !uiState.isLoading
             ) {
-                if (uiState.value.isLoading) {
+                if (uiState.isLoading) {
                     CircularProgressIndicator(
-                        modifier = Modifier.size(20.dp),
-                        color = MaterialTheme.colorScheme.onPrimary
+                        modifier = Modifier.size(24.dp),
+                        color = MaterialTheme.colorScheme.onPrimary,
+                        strokeWidth = 2.dp
                     )
                 } else {
                     Text("Save Expense")
