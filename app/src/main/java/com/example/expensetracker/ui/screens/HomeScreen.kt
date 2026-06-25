@@ -1,4 +1,3 @@
-// ui/screens/HomeScreen.kt
 package com.example.expensetracker.ui.screens
 
 import androidx.compose.foundation.layout.*
