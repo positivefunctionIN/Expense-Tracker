@@ -17,10 +17,6 @@ import com.example.expensetracker.ui.viewmodel.AddEditExpenseViewModel
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-/**
- * Add/Edit Expense Screen
- * Form for creating or editing expenses
- */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AddEditExpenseScreen(
