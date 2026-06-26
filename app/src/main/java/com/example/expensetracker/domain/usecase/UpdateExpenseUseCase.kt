@@ -3,9 +3,7 @@ package com.example.expensetracker.domain.usecase
 import com.example.expensetracker.domain.model.Expense
 import com.example.expensetracker.domain.repository.ExpenseRepository
 
-/**
- * Use case: Update an existing expense
- */
+
 class UpdateExpenseUseCase(
     private val expenseRepository: ExpenseRepository
 ) {

@@ -1,4 +1,3 @@
-// domain/usecase/GetAllExpensesUseCase.kt
 package com.example.expensetracker.domain.usecase
 
 import com.example.expensetracker.domain.model.Expense
