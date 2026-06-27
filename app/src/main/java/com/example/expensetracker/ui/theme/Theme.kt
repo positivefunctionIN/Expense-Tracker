@@ -1,4 +1,3 @@
-// ui/theme/Theme.kt
 package com.example.expensetracker.ui.theme
 
 import android.os.Build
@@ -7,9 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-/**
- * Light theme color scheme
- */
+
 private val LightColorScheme = lightColorScheme(
     primary = Primary,
     onPrimary = OnPrimary,
@@ -36,9 +33,7 @@ private val LightColorScheme = lightColorScheme(
     scrim = Color(0xFF000000)
 )
 
-/**
- * Dark theme color scheme
- */
+
 private val DarkColorScheme = darkColorScheme(
     primary = Primary,
     onPrimary = OnPrimary,
@@ -65,10 +60,7 @@ private val DarkColorScheme = darkColorScheme(
     scrim = Color(0xFF000000)
 )
 
-/**
- * Main theme composable
- * Apply this to your entire app
- */
+
 @Composable
 fun ExpenseTrackerTheme(
     darkTheme: Boolean = isSystemInDarkMode(),
