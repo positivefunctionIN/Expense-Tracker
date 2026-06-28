@@ -4,6 +4,7 @@ import android.os.Build
 import androidx.compose.foundation.isSystemInDarkMode
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 
 
@@ -33,7 +34,6 @@ private val LightColorScheme = lightColorScheme(
     scrim = Color(0xFF000000)
 )
 
-
 private val DarkColorScheme = darkColorScheme(
     primary = Primary,
     onPrimary = OnPrimary,
@@ -60,21 +60,17 @@ private val DarkColorScheme = darkColorScheme(
     scrim = Color(0xFF000000)
 )
 
-
 @Composable
 fun ExpenseTrackerTheme(
     darkTheme: Boolean = isSystemInDarkMode(),
-    dynamicColor: Boolean = true, // Use dynamic color on Android 12+
+    // Dynamic color is available on Android 12+
+    dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
         dynamicColor && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S -> {
             val context = LocalContext.current
-            if (darkTheme) {
-                dynamicDarkColorScheme(context)
-            } else {
-                dynamicLightColorScheme(context)
-            }
+            if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> DarkColorScheme
         else -> LightColorScheme
