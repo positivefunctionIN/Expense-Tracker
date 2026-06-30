@@ -62,7 +62,7 @@ private val DarkColorScheme = darkColorScheme(
 
 @Composable
 fun ExpenseTrackerTheme(
-    darkTheme: Boolean = isSystemInDarkMode(),
+//    darkTheme: Boolean = isSystemInDarkMode(),
     dynamicColor: Boolean = true,
     content: @Composable () -> Unit
 ) {
