@@ -54,22 +54,22 @@ android {
 }
 
 dependencies {
-    // Core Android & Lifecycle
+    // Android Core & Lifecycle
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.activity.compose)
 
-    // Compose Core (Matched to your flat keys in libs.versions.toml)
+    // Compose Foundation & UI (Matched to your flat keys in libs.versions.toml)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.ui.core)
+    implementation(libs.ui.main)
     implementation(libs.ui.graphics)
     implementation(libs.ui.tooling.preview)
     implementation(libs.material3)
     implementation(libs.icons.extended)
-    implementation(libs.foundation.core)
+    implementation(libs.foundation.main)
     implementation(libs.foundation.layout)
     
-    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.tooling.core)
     debugImplementation(libs.ui.test.manifest)
 
     // Navigation & Hilt
@@ -83,7 +83,7 @@ dependencies {
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    // Koin (Kept as requested)
+    // Koin (Alternative Dependency Injection)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.core)
