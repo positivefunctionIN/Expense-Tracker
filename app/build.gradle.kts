@@ -54,38 +54,38 @@ android {
 }
 
 dependencies {
-    // Android Core & Lifecycle
+    // Core Android & Lifecycle
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
+    implementation(libs.androidx.lifecycle.runtime)
     implementation(libs.androidx.activity.compose)
 
-    // Compose
+    // Compose Core (Matched to your flat keys in libs.versions.toml)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.compose.ui.core)
-    implementation(libs.compose.ui.graphics)
-    implementation(libs.compose.ui.tooling.preview)
-    implementation(libs.compose.material3)
-    implementation(libs.compose.material.icons)
-    implementation(libs.compose.foundation.core)
-    implementation(libs.compose.foundation.layout)
+    implementation(libs.ui.core)
+    implementation(libs.ui.graphics)
+    implementation(libs.ui.tooling.preview)
+    implementation(libs.material3)
+    implementation(libs.icons.extended)
+    implementation(libs.foundation.core)
+    implementation(libs.foundation.layout)
     
-    debugImplementation(libs.compose.ui.tooling)
-    debugImplementation(libs.compose.ui.test.manifest)
+    debugImplementation(libs.ui.tooling)
+    debugImplementation(libs.ui.test.manifest)
 
     // Navigation & Hilt
     implementation(libs.navigation.compose)
     implementation(libs.hilt.android)
     ksp(libs.hilt.compiler)
-    implementation(libs.hilt.navigation.compose)
+    implementation(libs.hilt.navigation)
 
     // Room Database
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
 
-    // Koin (kept as requested)
+    // Koin (Kept as requested)
     implementation(libs.koin.android)
-    implementation(libs.koin.androidx.compose)
+    implementation(libs.koin.compose)
     implementation(libs.koin.core)
 
     // Coroutines
@@ -95,8 +95,8 @@ dependencies {
     // Testing
     testImplementation(libs.junit)
     testImplementation(libs.coroutines.test)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(libs.test.junit)
+    androidTestImplementation(libs.test.espresso)
     androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.compose.ui.test.junit4)
+    androidTestImplementation(libs.ui.test.junit4)
 }
